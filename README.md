@@ -17,6 +17,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 * **Arquitectura de Layouts:**
   * `AuthLayout`: Layout independiente y limpio exclusivo para autenticación (sin barras de navegación).
   * `MainLayout`: Layout principal con Header persistente (contador en vivo), Footer corporativo y páginas legales.
+  * `shared/components`: Componentes reutilizables de presentación para el Header y Footer.
 * **Manejo de Estado Reactivo:** Uso de **Angular Signals** (`signal`, `computed`) para el estado global del carrito y la sesión de usuario de forma eficiente.
 * **Enrutamiento & Seguridad:** Carga perezosa (*Lazy Loading*) en todas las rutas modulares y protección de la vista privada del carrito mediante `authGuard`.
 * **Buenas Prácticas:**

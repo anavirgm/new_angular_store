@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CartService } from '../services/cart.service';
-import { HeaderComponent } from './header.component';
-import { FooterComponent } from './footer.component';
+import { HeaderComponent } from '../shared/components/header.component';
+import { FooterComponent } from '../shared/components/footer.component';
 
 @Component({
   selector: 'app-main-layout',
