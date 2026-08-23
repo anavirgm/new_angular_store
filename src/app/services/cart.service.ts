@@ -40,17 +40,33 @@ export class CartService {
     this.items().reduce((acc, item) => acc + (item.product.price * item.quantity), 0)
   );
 
-  addToCart(product: Product) {
+  addToCart(product: Product, quantity = 1) {
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      return;
+    }
     this.updateItems(currentItems => {
       const existing = currentItems.find(i => i.product.id === product.id);
       if (existing) {
         return currentItems.map(i => 
-          i.product.id === product.id ? { ...i, quantity: i.quantity + 1 } : i
+          i.product.id === product.id ? { ...i, quantity: i.quantity + quantity } : i
         );
       }
-      return [...currentItems, { product, quantity: 1 }];
+      return [...currentItems, { product, quantity }];
     });
     this.showFeedback(`${product.title} agregado al carrito`);
+  }
+
+  setQuantity(product: Product, quantity: number): void {
+    if (!Number.isInteger(quantity) || quantity < 1) {
+      return;
+    }
+    this.updateItems(currentItems => {
+      const existing = currentItems.some(item => item.product.id === product.id);
+      return existing
+        ? currentItems.map(item => item.product.id === product.id ? { ...item, quantity } : item)
+        : [...currentItems, { product, quantity }];
+    });
+    this.showFeedback(`${product.title} actualizado en el carrito`);
   }
 
   // Incrementar en 1

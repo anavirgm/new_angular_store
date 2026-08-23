@@ -72,7 +72,7 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
         } @else {
           <div class="product-grid">
             @for (product of filteredProducts(); track product.id) {
-            <article class="product-card">
+            <article class="product-card" tabindex="0" (click)="openPreview(product)" (keydown.enter)="openPreview(product)" (keydown.space)="openPreview(product); $event.preventDefault()">
               
               <div>
                 <div class="product-image">
@@ -101,7 +101,7 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
                 
                 <!-- Boton con Feedback Visual -->
                 <button class="button button-primary product-button"
-                  (click)="handleAddToCart(product)"
+                  (click)="handleAddToCart(product); $event.stopPropagation()"
                   [class.button-success]="addedProductIds().includes(product.id)">
                   {{ addedProductIds().includes(product.id) ? '✓ Agregado' : 'Agregar' }}
                 </button>
@@ -113,6 +113,40 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
         }
       }
     </div>
+
+    @if (selectedProduct(); as product) {
+      <div class="product-preview-backdrop" role="presentation" (click)="closePreview()">
+        <section class="product-preview" role="dialog" aria-modal="true" [attr.aria-labelledby]="'product-preview-title-' + product.id" (click)="$event.stopPropagation()">
+          <button class="preview-close" type="button" aria-label="Cerrar vista previa" (click)="closePreview()">×</button>
+          <div class="preview-image">
+            <img [src]="product.image" [alt]="product.title" />
+          </div>
+          <div class="preview-content">
+            <span class="product-category">{{ product.category }}</span>
+            <h2 [id]="'product-preview-title-' + product.id">{{ product.title }}</h2>
+            @if (product.rating; as rating) {
+              <div class="product-rating" [attr.aria-label]="rating.rate + ' de 5 estrellas, ' + rating.count + ' valoraciones'">
+                <span aria-hidden="true">★</span>
+                <strong>{{ rating.rate.toFixed(1) }}</strong>
+                <span>({{ rating.count }} valoraciones)</span>
+              </div>
+            }
+            <p class="preview-description">{{ product.description }}</p>
+            <span class="preview-price">\${{ product.price }}</span>
+            <div class="preview-actions">
+              <div class="quantity-control">
+                <button type="button" aria-label="Disminuir cantidad" (click)="decreasePreviewQuantity()">−</button>
+                <span class="quantity-value" aria-live="polite">{{ previewQuantity() }}</span>
+                <button type="button" aria-label="Aumentar cantidad" (click)="increasePreviewQuantity()">+</button>
+              </div>
+              <button class="button button-primary" type="button" (click)="addPreviewToCart(product)">
+                Agregar al carrito
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    }
 
   `
 })
@@ -126,6 +160,8 @@ export class ProductsComponent implements OnDestroy, OnInit {
   error = signal('');
   categoriesError = signal('');
   addedProductIds = signal<number[]>([]);
+  selectedProduct = signal<Product | null>(null);
+  previewQuantity = signal(1);
   searchTerm = signal('');
   filteredProducts = computed(() => {
     const search = this.searchTerm().trim().toLowerCase();
@@ -187,6 +223,30 @@ export class ProductsComponent implements OnDestroy, OnInit {
       this.feedbackTimers.delete(product.id);
     }, 1500);
     this.feedbackTimers.set(product.id, timer);
+  }
+
+  openPreview(product: Product): void {
+    this.selectedProduct.set(product);
+    const cartItem = this.cartService.items().find(item => item.product.id === product.id);
+    this.previewQuantity.set(cartItem?.quantity ?? 1);
+  }
+
+  closePreview(): void {
+    this.selectedProduct.set(null);
+    this.previewQuantity.set(1);
+  }
+
+  increasePreviewQuantity(): void {
+    this.previewQuantity.update(quantity => quantity + 1);
+  }
+
+  decreasePreviewQuantity(): void {
+    this.previewQuantity.update(quantity => Math.max(1, quantity - 1));
+  }
+
+  addPreviewToCart(product: Product): void {
+    this.cartService.setQuantity(product, this.previewQuantity());
+    this.closePreview();
   }
 
   onCategoryChange(event: Event) {

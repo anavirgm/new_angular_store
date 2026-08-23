@@ -31,6 +31,15 @@ describe('CartService', () => {
     expect(service.totalPrice()).toBe(20);
   });
 
+  it('sets the desired quantity instead of adding it to the existing quantity', () => {
+    service.addToCart(product);
+    service.addToCart(product);
+    service.setQuantity(product, 4);
+
+    expect(service.items()).toEqual([{ product, quantity: 4 }]);
+    expect(service.totalCount()).toBe(4);
+  });
+
   it('changes quantities and removes an item when decreasing from one', () => {
     service.addToCart(product);
     service.increaseQuantity(product.id);

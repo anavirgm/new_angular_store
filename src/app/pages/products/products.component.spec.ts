@@ -1,8 +1,9 @@
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
-import { CartService, Product } from '../../services/cart.service';
+import { CartItem, CartService, Product } from '../../services/cart.service';
 import { ProductService } from '../../services/product.service';
 import { ProductsComponent } from './products.component';
 
@@ -14,7 +15,7 @@ describe('ProductsComponent', () => {
     getCategories: ReturnType<typeof vi.fn>;
     getProductsByCategory: ReturnType<typeof vi.fn>;
   };
-  let cartService: { addToCart: ReturnType<typeof vi.fn> };
+  let cartService: { addToCart: ReturnType<typeof vi.fn>; setQuantity: ReturnType<typeof vi.fn>; items: ReturnType<typeof signal<CartItem[]>> };
   const product: Product = {
     id: 1,
     title: 'Test product',
@@ -31,7 +32,7 @@ describe('ProductsComponent', () => {
       getCategories: vi.fn().mockReturnValue(of(['electronics'])),
       getProductsByCategory: vi.fn().mockReturnValue(of([product]))
     };
-    cartService = { addToCart: vi.fn() };
+    cartService = { addToCart: vi.fn(), setQuantity: vi.fn(), items: signal<CartItem[]>([]) };
     TestBed.configureTestingModule({
       imports: [ProductsComponent],
       providers: [
@@ -71,6 +72,31 @@ describe('ProductsComponent', () => {
     component.onSearch({ target: { value: 'wallet' } } as unknown as Event);
 
     expect(component.filteredProducts()).toEqual([secondProduct]);
+  });
+
+  it('opens a product preview and controls the quantity before adding', () => {
+    fixture.detectChanges();
+
+    component.openPreview(product);
+    component.increasePreviewQuantity();
+    component.increasePreviewQuantity();
+    component.decreasePreviewQuantity();
+
+    expect(component.selectedProduct()).toEqual(product);
+    expect(component.previewQuantity()).toBe(2);
+    component.addPreviewToCart(product);
+
+    expect(cartService.setQuantity).toHaveBeenCalledWith(product, 2);
+    expect(component.selectedProduct()).toBeNull();
+  });
+
+  it('opens the preview with the current quantity from the cart', () => {
+    cartService.items.set([{ product, quantity: 3 }]);
+    fixture.detectChanges();
+
+    component.openPreview(product);
+
+    expect(component.previewQuantity()).toBe(3);
   });
 
   it('shows an empty state when the search has no matches', () => {
