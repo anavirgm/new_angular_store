@@ -96,7 +96,8 @@ export class LoginComponent {
       error: () => {
         this.error.set('Credenciales inválidas. Por favor intenta de nuevo.');
         this.loading.set(false);
-      }
+      },
+      complete: () => this.loading.set(false)
     });
   }
 }
