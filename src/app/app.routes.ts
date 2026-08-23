@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  // Layout de Autenticación (Sin Header ni Footer)
+  // Layout de Autenticación
   {
     path: 'auth',
     loadComponent: () => import('./layouts/auth-layout.component').then(m => m.AuthLayoutComponent),
@@ -13,7 +13,7 @@ export const routes: Routes = [
       }
     ]
   },
-  // Layout Principal (Con Header y Footer)
+  // Layout Principal
   {
     path: '',
     loadComponent: () => import('./layouts/main-layout.component').then(m => m.MainLayoutComponent),
