@@ -135,6 +135,9 @@ body {
 }
 
 .header-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.7rem;
 	color: #171717;
 	font-family: Georgia, serif;
 	font-size: 1.25rem;
@@ -215,16 +218,24 @@ body {
 	padding-bottom: 2rem;
 }
 
-.footer-brand p {
-	margin: 0 0 0.45rem;
+.footer-brand {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.7rem;
 	color: #fffdfa;
 	font-family: Georgia, serif;
 	font-size: 1.45rem;
 	letter-spacing: 0.04em;
+	text-decoration: none;
+}
+
+.footer-brand img,
+.header-brand img {
+	flex: 0 0 auto;
 }
 
 .footer-brand span {
-	color: #b8aca1;
+	color: #fffdfa;
 }
 
 .footer-links {
