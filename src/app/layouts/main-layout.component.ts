@@ -21,12 +21,16 @@ import { FooterComponent } from './footer.component';
           }
         </div>
       }
+
+      <!-- HEADER -->
       <app-header />
 
+      <!-- MAIN -->
       <main class="main-content">
         <router-outlet></router-outlet>
       </main>
 
+      <!-- FOOTER -->
       <app-footer />
     </div>
   `
