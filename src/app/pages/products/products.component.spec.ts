@@ -175,4 +175,35 @@ describe('ProductsComponent', () => {
       vi.useRealTimers();
     }
   });
+
+  it('does not open preview when interacting with the Add button', () => {
+    fixture.detectChanges();
+    const addButton = fixture.nativeElement.querySelector('.product-button') as HTMLButtonElement;
+    addButton.click();
+
+    expect(cartService.addToCart).toHaveBeenCalledWith(product);
+    expect(component.selectedProduct()).toBeNull();
+  });
+
+  it('closes preview modal and restores body overflow when pressing Escape key', () => {
+    fixture.detectChanges();
+    component.openPreview(product);
+
+    expect(component.selectedProduct()).toEqual(product);
+    expect(document.body.style.overflow).toBe('hidden');
+
+    component.onEscape();
+
+    expect(component.selectedProduct()).toBeNull();
+    expect(document.body.style.overflow).toBe('');
+  });
+
+  it('clears previous products when catalog loading fails', () => {
+    component.products.set([product]);
+    productService.getProducts.mockReturnValue(throwError(() => new Error('failed')));
+    fixture.detectChanges();
+
+    expect(component.products()).toEqual([]);
+    expect(component.error()).toContain('No pudimos cargar el catálogo');
+  });
 });
