@@ -2,7 +2,7 @@
 
 Single Page Application (SPA) desarrollada en Angular 21 para explorar productos de la **Fake Store API**, autenticarse y gestionar un carrito de compras. El proyecto implementa componentes standalone, rutas lazy-loaded, Signals, validación de sesión y control de acceso.
 
-**Demo en vivo:** [auraboutique.vercel.app](https://auraboutique.vercel.app/)
+**Demo en vivo:** [aurastoreee.vercel.app](https://aurastoreee.vercel.app/)
 
 ---
 
