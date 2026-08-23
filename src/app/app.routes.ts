@@ -26,6 +26,14 @@ export const routes: Routes = [
         path: 'cart',
         canActivate: [authGuard],
         loadComponent: () => import('./pages/cart/cart.component').then(m => m.CartComponent)
+      },
+      {
+        path: 'terms',
+        loadComponent: () => import('./pages/legal/terms.component').then(m => m.TermsComponent)
+      },
+      {
+        path: 'privacy',
+        loadComponent: () => import('./pages/legal/privacy.component').then(m => m.PrivacyComponent)
       }
     ]
   },
@@ -33,14 +41,6 @@ export const routes: Routes = [
     path: 'login',
     redirectTo: 'auth/login',
     pathMatch: 'full'
-  },
-  {
-    path: 'terms',
-    loadComponent: () => import('./pages/legal/terms.component').then(m => m.TermsComponent)
-  },
-  {
-    path: 'privacy',
-    loadComponent: () => import('./pages/legal/privacy.component').then(m => m.PrivacyComponent)
   },
   {
     path: '**',
