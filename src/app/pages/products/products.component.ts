@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { CartService, Product } from '../../services/cart.service';
@@ -32,6 +32,17 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
       </div>
 
       <!-- Spinner y Skeleton Loading -->
+        <div class="search-field">
+          <label for="product-search">Buscar producto</label>
+          <input
+            id="product-search"
+            type="search"
+            [value]="searchTerm()"
+            (input)="onSearch($event)"
+            placeholder="Nombre, categoría o descripción"
+            autocomplete="off"
+          />
+        </div>
       @if (loading()) {
         <div class="loading-state" aria-label="Cargando catálogo" aria-busy="true">
           <div class="spinner" aria-hidden="true"></div>
@@ -53,8 +64,14 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
           </div>
         }
         <!-- Grid Responsivo -->
-        <div class="product-grid">
-          @for (product of products(); track product.id) {
+        @if (filteredProducts().length === 0) {
+          <div class="empty-state search-empty-state">
+            <h3>No encontramos productos</h3>
+            <p>Prueba con otro término de búsqueda o cambia la categoría.</p>
+          </div>
+        } @else {
+          <div class="product-grid">
+            @for (product of filteredProducts(); track product.id) {
             <article class="product-card">
               
               <div>
@@ -91,8 +108,9 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
               </div>
 
             </article>
-          }
-        </div>
+            }
+          </div>
+        }
       }
     </div>
 
@@ -108,6 +126,17 @@ export class ProductsComponent implements OnDestroy, OnInit {
   error = signal('');
   categoriesError = signal('');
   addedProductIds = signal<number[]>([]);
+  searchTerm = signal('');
+  filteredProducts = computed(() => {
+    const search = this.searchTerm().trim().toLowerCase();
+    if (!search) {
+      return this.products();
+    }
+    return this.products().filter(product =>
+      [product.title, product.description, product.category]
+        .some(value => value.toLowerCase().includes(search))
+    );
+  });
   private readonly categorySelection = new Subject<string>();
   private readonly destroy$ = new Subject<void>();
   private readonly feedbackTimers = new Map<number, ReturnType<typeof setTimeout>>();
@@ -163,6 +192,10 @@ export class ProductsComponent implements OnDestroy, OnInit {
   onCategoryChange(event: Event) {
     const category = (event.target as HTMLSelectElement).value;
     this.categorySelection.next(category);
+  }
+
+  onSearch(event: Event): void {
+    this.searchTerm.set((event.target as HTMLInputElement).value);
   }
 
   ngOnDestroy(): void {

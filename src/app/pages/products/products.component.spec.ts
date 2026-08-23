@@ -63,6 +63,25 @@ describe('ProductsComponent', () => {
       .toContain('4.5 de 5 estrellas');
   });
 
+  it('filters products by the search term', () => {
+    const secondProduct = { ...product, id: 2, title: 'Leather wallet', category: 'jewelery' };
+    productService.getProducts.mockReturnValue(of([product, secondProduct]));
+    fixture.detectChanges();
+
+    component.onSearch({ target: { value: 'wallet' } } as unknown as Event);
+
+    expect(component.filteredProducts()).toEqual([secondProduct]);
+  });
+
+  it('shows an empty state when the search has no matches', () => {
+    fixture.detectChanges();
+    component.onSearch({ target: { value: 'nonexistent' } } as unknown as Event);
+    fixture.detectChanges();
+
+    expect(component.filteredProducts()).toEqual([]);
+    expect(fixture.nativeElement.querySelector('.search-empty-state')).toBeTruthy();
+  });
+
   it('loads products by the selected category', () => {
     fixture.detectChanges();
     component.onCategoryChange({ target: { value: 'electronics' } } as unknown as Event);

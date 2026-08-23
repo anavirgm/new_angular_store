@@ -10,7 +10,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 
 ### Requerimientos Funcionales
 * **Autenticación Real:** Consumo del endpoint `/auth/login`, almacenamiento persistente del token JWT y validación de estructura y expiración antes de aceptar la sesión.
-* **Catálogo & Filtros:** Exploración de productos en tiempo real con filtrado dinámico por categorías.
+* **Catálogo & Filtros:** Exploración de productos en tiempo real con filtrado dinámico por categorías y búsqueda local por nombre, descripción o categoría.
 * **Carrito Interactivo:** Agregar productos, ajustar cantidades (`+` / `-`), eliminar ítems, persistir el carrito al recargar y calcular en vivo el monto total y contador de productos.
 
 ### Requerimientos Técnicos
@@ -28,7 +28,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 ### Calidad y pruebas
 * Tests unitarios para autenticación, guard, interceptor, catálogo, carrito y layout principal.
 * Cobertura de tokens inválidos/expirados, dominios externos, login inválido, persistencia y errores de categorías.
-* Ejecución verificada: `42/42` pruebas correctas.
+* Ejecución verificada: `44/44` pruebas correctas.
 
 ---
 
