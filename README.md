@@ -16,18 +16,18 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 ### Requerimientos Técnicos
 * **Arquitectura de Layouts:**
   * `AuthLayout`: Layout independiente y limpio exclusivo para autenticación (sin barras de navegación).
-  * `MainLayout`: Layout principal con Header persistente (contador en vivo) y Footer corporativo.
+  * `MainLayout`: Layout principal con Header persistente (contador en vivo), Footer corporativo y páginas legales.
 * **Manejo de Estado Reactivo:** Uso de **Angular Signals** (`signal`, `computed`) para el estado global del carrito y la sesión de usuario de forma eficiente.
 * **Enrutamiento & Seguridad:** Carga perezosa (*Lazy Loading*) en todas las rutas modulares y protección de la vista privada del carrito mediante `authGuard`.
 * **Buenas Prácticas:**
-  * `authInterceptor`: Inyección del token solo en peticiones a `fakestoreapi.com` y cierre de sesión ante errores `401`.
+  * `authInterceptor`: Inyección del token solo en peticiones a `fakestoreapi.com`, exclusión explícita del login, cierre de sesión ante errores `401` y registro centralizado de errores `5xx`.
   * Feedback visual mediante spinner, *Skeleton Loaders*, alertas y toast de acciones.
   * Interfaz responsiva, accesible y con estilos centralizados en CSS.
 
 ### Calidad y pruebas
 * Tests unitarios para autenticación, guard, interceptor, catálogo, carrito y layout principal.
 * Cobertura de tokens inválidos/expirados, dominios externos, login inválido, persistencia y errores de categorías.
-* Ejecución verificada: `33/33` pruebas correctas.
+* Ejecución verificada: `37/37` pruebas correctas.
 
 ---
 
