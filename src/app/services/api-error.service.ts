@@ -4,7 +4,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class ApiErrorService {
   logServerError(error: HttpErrorResponse): void {
-    console.error('Error del servidor al consumir Fake Store API', {
+    const isFakeStore = error.url?.includes('fakestoreapi.com');
+    const target = isFakeStore ? 'Fake Store API' : error.url ? `servidor (${error.url})` : 'servidor';
+    console.error(`Error del ${target}`, {
       status: error.status,
       url: error.url
     });
