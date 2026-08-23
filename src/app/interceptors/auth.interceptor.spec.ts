@@ -3,6 +3,7 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { ApiErrorService } from '../services/api-error.service';
 import { authInterceptor } from './auth.interceptor';
 
 describe('authInterceptor', () => {
@@ -10,15 +11,18 @@ describe('authInterceptor', () => {
   let httpMock: HttpTestingController;
   let router: { navigate: ReturnType<typeof vi.fn> };
   let authService: { logout: ReturnType<typeof vi.fn> };
+  let apiErrorService: { logServerError: ReturnType<typeof vi.fn> };
 
   beforeEach(() => {
     localStorage.clear();
     router = { navigate: vi.fn() };
     authService = { logout: vi.fn() };
+    apiErrorService = { logServerError: vi.fn() };
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: router },
         { provide: AuthService, useValue: authService },
+        { provide: ApiErrorService, useValue: apiErrorService },
         provideHttpClient(withInterceptors([authInterceptor])),
         provideHttpClientTesting()
       ]
@@ -80,5 +84,19 @@ describe('authInterceptor', () => {
     const request = httpMock.expectOne('https://example.com/data');
     expect(request.request.headers.has('Authorization')).toBe(false);
     request.flush([]);
+  });
+
+  it('delegates server errors to the centralized error service', () => {
+    const http = TestBed.inject(HttpClient);
+    http.get(apiUrl).subscribe({ error: () => undefined });
+
+    const request = httpMock.expectOne(apiUrl);
+    const error = new HttpErrorResponse({ status: 503, url: apiUrl });
+    request.flush(null, error);
+
+    expect(apiErrorService.logServerError).toHaveBeenCalledWith(expect.objectContaining({
+      status: 503,
+      url: apiUrl
+    }));
   });
 });
