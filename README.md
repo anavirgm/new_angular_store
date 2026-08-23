@@ -27,7 +27,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 ### Calidad y pruebas
 * Tests unitarios para autenticación, guard, interceptor, catálogo, carrito y layout principal.
 * Cobertura de tokens inválidos/expirados, dominios externos, login inválido, persistencia y errores de categorías.
-* Ejecución verificada: `37/37` pruebas correctas.
+* Ejecución verificada: `42/42` pruebas correctas.
 
 ---
 
