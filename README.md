@@ -90,7 +90,7 @@ npm run build             # Generar el bundle de producción
 
 ## 🧠 Decisiones Técnicas
 
-* Uso de Signals: `CartService` y `AuthService` exponen estado reactivo con Signals y valores derivados con `computed`, reduciendo boilerplate innecesario.
+* **Manejo de estado con Signals:** Se eligieron Angular Signals para administrar el estado reactivo del carrito y de la sesión en `CartService` y `AuthService`. `signal()` almacena los datos que pueden cambiar, mientras `computed()` calcula automáticamente valores derivados como la cantidad de productos y el total del carrito. Esta solución es suficiente para el alcance de la aplicación, mantiene el código simple y evita incorporar la complejidad de NgRx, que no se utiliza en este proyecto. RxJS sí se utiliza para las peticiones HTTP y flujos asíncronos, con operadores como `catchError`, `switchMap` y `finalize`.
 
 * Arquitectura Standalone: Facilita el Lazy Loading nativo sin necesidad de declarar NgModules, optimizando el tiempo de carga inicial (bundle size).
 
