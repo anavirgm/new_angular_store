@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, ElementRef, HostListener, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { CartService, Product } from '../../services/cart.service';
@@ -72,9 +72,9 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
         } @else {
           <div class="product-grid">
             @for (product of filteredProducts(); track product.id) {
-            <article class="product-card" tabindex="0" (click)="openPreview(product)" (keydown.enter)="openPreview(product)" (keydown.space)="openPreview(product); $event.preventDefault()">
+            <article class="product-card">
               
-              <div>
+              <button type="button" class="product-card-btn" (click)="openPreview(product)" [attr.aria-label]="'Ver detalles de ' + product.title">
                 <div class="product-image">
                   <img [src]="product.image" [alt]="product.title" />
                 </div>
@@ -94,14 +94,14 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
                     <span>({{ rating.count }})</span>
                   </div>
                 }
-              </div>
+              </button>
 
               <div class="product-footer">
                 <span class="product-price">\${{ product.price }}</span>
                 
                 <!-- Boton con Feedback Visual -->
                 <button class="button button-primary product-button"
-                  (click)="handleAddToCart(product); $event.stopPropagation()"
+                  (click)="handleAddToCart(product)"
                   [class.button-success]="addedProductIds().includes(product.id)">
                   {{ addedProductIds().includes(product.id) ? '✓ Agregado' : 'Agregar' }}
                 </button>
@@ -116,8 +116,8 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
 
     @if (selectedProduct(); as product) {
       <div class="product-preview-backdrop" role="presentation" (click)="closePreview()">
-        <section class="product-preview" role="dialog" aria-modal="true" [attr.aria-labelledby]="'product-preview-title-' + product.id" (click)="$event.stopPropagation()">
-          <button class="preview-close" type="button" aria-label="Cerrar vista previa" (click)="closePreview()">×</button>
+        <section class="product-preview" role="dialog" aria-modal="true" [attr.aria-labelledby]="'product-preview-title-' + product.id" (click)="$event.stopPropagation()" (keydown)="onModalKeydown($event)">
+          <button #modalCloseButton class="preview-close" type="button" aria-label="Cerrar vista previa" (click)="closePreview()">×</button>
           <div class="preview-image">
             <img [src]="product.image" [alt]="product.title" />
           </div>
@@ -154,6 +154,8 @@ export class ProductsComponent implements OnDestroy, OnInit {
   private productService = inject(ProductService);
   public cartService = inject(CartService);
 
+  @ViewChild('modalCloseButton') modalCloseButton?: ElementRef<HTMLButtonElement>;
+
   products = signal<Product[]>([]);
   categories = signal<string[]>([]);
   loading = signal<boolean>(true);
@@ -180,6 +182,7 @@ export class ProductsComponent implements OnDestroy, OnInit {
   private readonly categorySelection = new Subject<string>();
   private readonly destroy$ = new Subject<void>();
   private readonly feedbackTimers = new Map<number, ReturnType<typeof setTimeout>>();
+  private lastFocusedElement: HTMLElement | null = null;
 
   ngOnInit() {
     this.categorySelection.pipe(
@@ -197,6 +200,13 @@ export class ProductsComponent implements OnDestroy, OnInit {
     ).subscribe(data => this.categories.set(data));
   }
 
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.selectedProduct()) {
+      this.closePreview();
+    }
+  }
+
   private loadProducts(category: string) {
     this.loading.set(true);
     this.error.set('');
@@ -206,6 +216,7 @@ export class ProductsComponent implements OnDestroy, OnInit {
 
     return request.pipe(
       catchError(() => {
+        this.products.set([]);
         this.error.set('No pudimos cargar el catálogo. Intenta de nuevo.');
         return EMPTY;
       }),
@@ -230,14 +241,43 @@ export class ProductsComponent implements OnDestroy, OnInit {
   }
 
   openPreview(product: Product): void {
+    this.lastFocusedElement = document.activeElement as HTMLElement | null;
     this.selectedProduct.set(product);
     const cartItem = this.cartService.items().find(item => item.product.id === product.id);
     this.previewQuantity.set(cartItem?.quantity ?? 1);
+    document.body.style.overflow = 'hidden';
+    setTimeout(() => {
+      this.modalCloseButton?.nativeElement?.focus();
+    }, 0);
   }
 
   closePreview(): void {
     this.selectedProduct.set(null);
     this.previewQuantity.set(1);
+    document.body.style.overflow = '';
+    if (this.lastFocusedElement) {
+      this.lastFocusedElement.focus();
+      this.lastFocusedElement = null;
+    }
+  }
+
+  onModalKeydown(event: KeyboardEvent): void {
+    if (event.key !== 'Tab') return;
+    const dialog = event.currentTarget as HTMLElement;
+    const focusables = dialog.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
   }
 
   increasePreviewQuantity(): void {
@@ -263,6 +303,7 @@ export class ProductsComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
+    document.body.style.overflow = '';
     this.destroy$.next();
     this.destroy$.complete();
     this.categorySelection.complete();
