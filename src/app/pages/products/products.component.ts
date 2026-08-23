@@ -140,7 +140,7 @@ import { catchError, EMPTY, finalize, Subject, switchMap, takeUntil } from 'rxjs
                 <button type="button" aria-label="Aumentar cantidad" (click)="increasePreviewQuantity()">+</button>
               </div>
               <button class="button button-primary" type="button" (click)="addPreviewToCart(product)">
-                Agregar al carrito
+                {{ previewIsInCart() ? 'Actualizar carrito' : 'Agregar al carrito' }}
               </button>
             </div>
           </div>
@@ -162,6 +162,10 @@ export class ProductsComponent implements OnDestroy, OnInit {
   addedProductIds = signal<number[]>([]);
   selectedProduct = signal<Product | null>(null);
   previewQuantity = signal(1);
+  previewIsInCart = computed(() => {
+    const product = this.selectedProduct();
+    return product ? this.cartService.items().some(item => item.product.id === product.id) : false;
+  });
   searchTerm = signal('');
   filteredProducts = computed(() => {
     const search = this.searchTerm().trim().toLowerCase();

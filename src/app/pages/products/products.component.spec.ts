@@ -97,6 +97,7 @@ describe('ProductsComponent', () => {
     component.openPreview(product);
 
     expect(component.previewQuantity()).toBe(3);
+    expect(component.previewIsInCart()).toBe(true);
   });
 
   it('shows an empty state when the search has no matches', () => {
