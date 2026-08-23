@@ -57,7 +57,6 @@ describe('CartService', () => {
 
     expect(service.feedback()).toBe('Pedido simulado correctamente');
     expect(service.feedbackKind()).toBe('checkout');
-    expect(service.feedbackKind()).toBe('checkout');
   });
 
   it('allows the checkout feedback to be closed manually', () => {
