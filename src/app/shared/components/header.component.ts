@@ -19,6 +19,7 @@ import { AuthService } from '../../services/auth.service';
           Catálogo
         </a>
         <a routerLink="/cart" routerLinkActive="active-link" class="cart-button" aria-label="Abrir carrito de compras">
+          <img ngSrc="/cart-icon.svg" width="24" height="24" alt="" />
           <span>Mi Carrito</span>
           <span class="cart-badge" aria-live="polite">{{ cartService.totalCount() }}</span>
         </a>

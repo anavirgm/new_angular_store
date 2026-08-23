@@ -47,6 +47,7 @@ describe('MainLayoutComponent', () => {
     expect(element.querySelector('.cart-badge')?.textContent?.trim()).toBe('3');
     expect(element.querySelector('.main-footer')?.textContent).toContain('Copyright');
     expect(element.querySelector('.header-brand img')?.getAttribute('src')).toContain('aura-mark.svg');
+    expect(element.querySelector('.cart-button img')?.getAttribute('src')).toContain('cart-icon.svg');
     expect(element.querySelector('.footer-brand img')?.getAttribute('src')).toContain('aura-mark.svg');
     expect(element.querySelector('a[href="/terms"]')).toBeTruthy();
     expect(element.querySelector('a[href="/privacy"]')).toBeTruthy();
