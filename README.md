@@ -10,7 +10,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 
 ### Requerimientos Funcionales
 * **Autenticación Real:** Consumo del endpoint `/auth/login`, almacenamiento persistente del token JWT y validación de estructura y expiración antes de aceptar la sesión.
-* **Catálogo & Filtros:** Exploración de productos en tiempo real con filtrado dinámico por categorías, descripción, precio y valoración de cada producto.
+* **Catálogo & Filtros:** Exploración de productos en tiempo real con filtrado dinámico por categorías.
 * **Carrito Interactivo:** Agregar productos, ajustar cantidades (`+` / `-`), eliminar ítems, persistir el carrito al recargar y calcular en vivo el monto total y contador de productos.
 
 ### Requerimientos Técnicos
@@ -20,7 +20,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 * **Manejo de Estado Reactivo:** Uso de **Angular Signals** (`signal`, `computed`) para el estado global del carrito y la sesión de usuario de forma eficiente.
 * **Enrutamiento & Seguridad:** Carga perezosa (*Lazy Loading*) en todas las rutas modulares y protección de la vista privada del carrito mediante `authGuard`.
 * **Buenas Prácticas:**
-  * `authInterceptor`: Inyección del token solo en peticiones a `fakestoreapi.com`, exclusión explícita del login, cierre de sesión ante errores `401` y registro centralizado de errores `5xx`.
+  * `authInterceptor`: Inyección del token solo en peticiones a `fakestoreapi.com`, exclusión explícita del login, cierre de sesión ante errores `401` y registro de errores `5xx` mediante un servicio dedicado.
   * Feedback visual mediante spinner, *Skeleton Loaders*, alertas y toast de acciones.
   * Interfaz responsiva, accesible y con estilos centralizados en CSS.
 
@@ -98,7 +98,9 @@ npm run build             # Generar el bundle de producción
 
 * Seguridad de peticiones: el interceptor solo añade `Authorization` al dominio de Fake Store API; además, la sesión se invalida cuando el JWT es inválido, está expirado o la API responde `401`.
 
-* La aplicación valida la estructura y expiración del JWT para administrar la sesión del cliente. La firma criptográfica y la autorización real corresponden al servidor, que es quien debe validar el token.
+* La aplicación valida la estructura y expiración del JWT para administrar la sesión del cliente; no verifica su firma criptográfica. La autenticidad y autorización real corresponden al servidor.
+
+* La sesión se persiste en `localStorage` para cumplir la persistencia solicitada. En un entorno productivo se recomienda usar una cookie `HttpOnly`, `Secure` y con una política `SameSite` adecuada, gestionada por un backend, para reducir la exposición ante XSS.
 
 * El botón de checkout muestra una confirmación de pedido simulado; no procesa pagos ni crea órdenes reales porque ese flujo está fuera del alcance de Fake Store API.
 
