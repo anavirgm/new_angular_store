@@ -2,7 +2,7 @@
 
 Single Page Application (SPA) desarrollada en Angular 21 para explorar productos de la **Fake Store API**, autenticarse y gestionar un carrito de compras. El proyecto implementa componentes standalone, rutas lazy-loaded, Signals, validación de sesión y control de acceso.
 
-**Demo en vivo:** [fake-store-trial.vercel.app](https://fake-store-trial.vercel.app/)
+**Demo en vivo:** [auraboutique.vercel.app](https://auraboutique.vercel.app/)
 
 ---
 
@@ -62,8 +62,8 @@ Si quieres clonar el proyecto e instalarlo localmente:
 
 1. **Clonar el repositorio:**
     ```bash
-    git clone https://github.com/anavirgm/fake-store-trial.git
-    cd fake-store-trial
+    git clone https://github.com/anavirgm/new_angular_store.git
+    cd new_angular_store
     ```
 
 2. **Instalar las dependencias:**
