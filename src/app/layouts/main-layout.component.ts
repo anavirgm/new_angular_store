@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { CartService } from '../services/cart.service';
-import { AuthService } from '../services/auth.service';
+import { HeaderComponent } from './header.component';
+import { FooterComponent } from './footer.component';
 
 @Component({
   selector: 'app-main-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   template: `
     <div class="main-wrapper">
       @if (cartService.feedback(); as message) {
@@ -20,57 +21,16 @@ import { AuthService } from '../services/auth.service';
           }
         </div>
       }
-      <header class="main-header">
-        <a routerLink="/" class="header-brand" aria-label="AURA Boutique, ir al catálogo">
-          AURA BOUTIQUE
-        </a>
-
-        <nav class="header-actions" aria-label="Navegación principal">
-          <a routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }" class="header-link">
-            Catálogo
-          </a>
-          <a routerLink="/cart" routerLinkActive="active-link" class="cart-button" aria-label="Abrir carrito de compras">
-            <span>Mi Carrito</span>
-            <span class="cart-badge" aria-live="polite">
-              {{ cartService.totalCount() }}
-            </span>
-          </a>
-
-          @if (authService.isAuthenticated()) {
-            <button type="button" (click)="authService.logout()" class="btn-logout">
-              Cerrar Sesión
-            </button>
-          } @else {
-            <a routerLink="/auth/login" routerLinkActive="active-link" class="header-link">
-              Iniciar Sesión
-            </a>
-          }
-        </nav>
-      </header>
+      <app-header />
 
       <main class="main-content">
         <router-outlet></router-outlet>
       </main>
 
-      <footer class="main-footer">
-        <div class="footer-content">
-          <div class="footer-brand">
-            <p>AURA Boutique</p>
-            <span>Selección curada para tu estilo diario.</span>
-          </div>
-          <nav class="footer-links" aria-label="Información legal">
-            <a routerLink="/terms">Términos y condiciones</a>
-            <a routerLink="/privacy">Política de privacidad</a>
-          </nav>
-        </div>
-        <div class="footer-bottom">
-          <span>Copyright © 2026 AURA Boutique. Todos los derechos reservados.</span>
-        </div>
-      </footer>
+      <app-footer />
     </div>
   `
 })
 export class MainLayoutComponent {
   public cartService = inject(CartService);
-  public authService = inject(AuthService);
 }
