@@ -14,7 +14,7 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     const token = this.sessionToken();
-    if (!token || !this.isValidJwt(token)) {
+    if (!token || !this.hasValidJwtStructureAndExpiry(token)) {
       if (token) {
         this.logout(false);
       }
@@ -23,7 +23,7 @@ export class AuthService {
     return true;
   }
 
-  private isValidJwt(token: string): boolean {
+  private hasValidJwtStructureAndExpiry(token: string): boolean {
     const parts = token.split('.');
     if (parts.length !== 3) {
       return false;
