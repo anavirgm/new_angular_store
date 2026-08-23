@@ -50,6 +50,16 @@ describe('authInterceptor', () => {
     request.flush([]);
   });
 
+  it('does not send a residual token to the login endpoint', () => {
+    localStorage.setItem('token', 'test-token');
+    const http = TestBed.inject(HttpClient);
+    http.post('https://fakestoreapi.com/auth/login', {}).subscribe();
+
+    const request = httpMock.expectOne('https://fakestoreapi.com/auth/login');
+    expect(request.request.headers.has('Authorization')).toBe(false);
+    request.flush({ token: 'response-token' });
+  });
+
   it('clears the session and redirects on protected 401 responses', () => {
     localStorage.setItem('token', 'test-token');
     const http = TestBed.inject(HttpClient);
