@@ -90,7 +90,7 @@ npm run build             # Generar el bundle de producción
 
 ## 🧠 Decisiones Técnicas
 
-* Uso de Signals sobre NgRx/RxJS puro: `CartService` y `AuthService` exponen estado reactivo con Signals y valores derivados con `computed`, reduciendo boilerplate innecesario.
+* Uso de Signals: `CartService` y `AuthService` exponen estado reactivo con Signals y valores derivados con `computed`, reduciendo boilerplate innecesario.
 
 * Arquitectura Standalone: Facilita el Lazy Loading nativo sin necesidad de declarar NgModules, optimizando el tiempo de carga inicial (bundle size).
 
