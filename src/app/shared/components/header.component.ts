@@ -9,9 +9,9 @@ import { AuthService } from '../../services/auth.service';
   imports: [NgOptimizedImage, RouterLink, RouterLinkActive],
   template: `
     <header class="main-header">
-      <a routerLink="/" class="header-brand" aria-label="AURA Boutique, ir al catálogo">
+      <a routerLink="/" class="header-brand" aria-label="AURA Store, ir al catálogo">
         <img ngSrc="/aura-mark.svg" width="40" height="40" alt="" />
-        <span>AURA BOUTIQUE</span>
+        <span>AURA STORE</span>
       </a>
 
       <nav class="header-actions" aria-label="Navegación principal">

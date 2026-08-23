@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
   template: `
     <main class="legal-page page-shell">
       <a routerLink="/" class="text-link">← Volver al catálogo</a>
-      <span class="eyebrow">AURA BOUTIQUE</span>
+      <span class="eyebrow">AURA STORE</span>
       <h1>Política de privacidad</h1>
       <p class="legal-intro">Respetamos tu privacidad y explicamos de forma clara cómo tratamos la información de la aplicación.</p>
       <section class="legal-section">

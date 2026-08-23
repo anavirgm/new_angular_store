@@ -8,9 +8,9 @@ import { RouterLink } from '@angular/router';
   template: `
     <footer class="main-footer">
       <div class="footer-content">
-        <a routerLink="/" class="footer-brand" aria-label="AURA Boutique, ir al catálogo">
+        <a routerLink="/" class="footer-brand" aria-label="AURA Store, ir al catálogo">
           <img ngSrc="/aura-mark.svg" width="36" height="36" alt="" />
-          <span>AURA Boutique</span>
+          <span>AURA Store</span>
         </a>
         <nav class="footer-links" aria-label="Información legal">
           <a routerLink="/terms">Términos y condiciones</a>
@@ -18,7 +18,7 @@ import { RouterLink } from '@angular/router';
         </nav>
       </div>
       <div class="footer-bottom">
-        <span>Copyright © 2026 AURA Boutique. Todos los derechos reservados.</span>
+        <span>Copyright © 2026 AURA Store. Todos los derechos reservados.</span>
       </div>
     </footer>
   `

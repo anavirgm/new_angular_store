@@ -7,12 +7,12 @@ import { RouterLink } from '@angular/router';
   template: `
     <main class="legal-page page-shell">
       <a routerLink="/" class="text-link">← Volver al catálogo</a>
-      <span class="eyebrow">AURA BOUTIQUE</span>
+      <span class="eyebrow">AURA STORE</span>
       <h1>Términos y condiciones</h1>
       <p class="legal-intro">Estas condiciones describen las reglas generales para utilizar nuestra tienda online.</p>
       <section class="legal-section">
         <h2>Uso de la tienda</h2>
-        <p>Al navegar por AURA Boutique aceptas utilizar el sitio de forma responsable y proporcionar información correcta cuando sea necesario.</p>
+        <p>Al navegar por AURA Store aceptas utilizar el sitio de forma responsable y proporcionar información correcta cuando sea necesario.</p>
       </section>
       <section class="legal-section">
         <h2>Productos y pedidos</h2>

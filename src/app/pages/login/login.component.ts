@@ -12,8 +12,8 @@ import { AuthService } from '../../services/auth.service';
       <div class="auth-card">
         
         <div class="auth-heading">
-          <img class="auth-logo" ngSrc="/aura-mark.svg" width="64" height="64" alt="AURA Boutique" />
-          <p class="eyebrow">AURA BOUTIQUE</p>
+          <img class="auth-logo" ngSrc="/aura-mark.svg" width="64" height="64" alt="AURA Store" />
+          <p class="eyebrow">AURA STORE</p>
           <h2>Iniciar Sesión</h2>
           <p>Ingresa tus credenciales para acceder a tu cuenta</p>
         </div>
