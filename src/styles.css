@@ -520,6 +520,15 @@ body {
 	text-align: center;
 }
 
+.auth-logo {
+	display: block;
+	width: 64px;
+	height: 64px;
+	margin: 0 auto 1rem;
+	border-radius: 16px;
+	box-shadow: 0 8px 18px rgba(61, 43, 31, 0.14);
+}
+
 .auth-heading h2 {
 	margin-bottom: 0.5rem;
 	font-size: 2rem;

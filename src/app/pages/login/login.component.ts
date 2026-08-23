@@ -1,17 +1,18 @@
 import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgOptimizedImage],
   template: `
     <div class="auth-page">
       
       <div class="auth-card">
         
         <div class="auth-heading">
+          <img class="auth-logo" ngSrc="/aura-mark.svg" width="64" height="64" alt="AURA Boutique" />
           <p class="eyebrow">AURA BOUTIQUE</p>
           <h2>Iniciar Sesión</h2>
           <p>Ingresa tus credenciales para acceder a tu cuenta</p>
