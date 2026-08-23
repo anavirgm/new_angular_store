@@ -1,4 +1,4 @@
-# AURA Boutique — E-Commerce SPA (Angular)
+# AURA Store — E-Commerce SPA (Angular)
 
 Single Page Application (SPA) desarrollada en Angular 21 para explorar productos de la **Fake Store API**, autenticarse y gestionar un carrito de compras. El proyecto implementa componentes standalone, rutas lazy-loaded, Signals, validación de sesión y control de acceso.
 
@@ -28,7 +28,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 ### Calidad y pruebas
 * Tests unitarios para autenticación, guard, interceptor, catálogo, carrito y layout principal.
 * Cobertura de tokens inválidos/expirados, dominios externos, login inválido, persistencia y errores de categorías.
-* Ejecución verificada: `47/47` pruebas correctas.
+* Ejecución verificada: `50/50` pruebas correctas.
 
 ---
 
@@ -36,7 +36,7 @@ Single Page Application (SPA) desarrollada en Angular 21 para explorar productos
 
 * **Framework:** Angular 21 (Standalone Components)
 * **Estado & Reactividad:** Angular Signals & RxJS
-* **Estilos:** CSS3 nativo (Diseño personalizado estilo boutique)
+* **Estilos:** CSS3 nativo (Diseño personalizado)
 * **API:** Fake Store API (`https://fakestoreapi.com`)
 
 ### Rutas principales
