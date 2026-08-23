@@ -1,0 +1,111 @@
+# AURA Boutique — E-Commerce SPA (Angular)
+
+Single Page Application (SPA) desarrollada en Angular 21 para explorar productos de la **Fake Store API**, autenticarse y gestionar un carrito de compras. El proyecto implementa componentes standalone, rutas lazy-loaded, Signals, validación de sesión y control de acceso.
+
+**Demo en vivo:** [fake-store-trial.vercel.app](https://fake-store-trial.vercel.app/)
+
+---
+
+## 📋 Requerimientos Cumplidos
+
+### Requerimientos Funcionales
+* **Autenticación Real:** Consumo del endpoint `/auth/login`, almacenamiento persistente del token JWT y validación de estructura y expiración antes de aceptar la sesión.
+* **Catálogo & Filtros:** Exploración de productos en tiempo real con filtrado dinámico por categorías, descripción, precio y valoración de cada producto.
+* **Carrito Interactivo:** Agregar productos, ajustar cantidades (`+` / `-`), eliminar ítems, persistir el carrito al recargar y calcular en vivo el monto total y contador de productos.
+
+### Requerimientos Técnicos
+* **Arquitectura de Layouts:**
+  * `AuthLayout`: Layout independiente y limpio exclusivo para autenticación (sin barras de navegación).
+  * `MainLayout`: Layout principal con Header persistente (contador en vivo) y Footer corporativo.
+* **Manejo de Estado Reactivo:** Uso de **Angular Signals** (`signal`, `computed`) para el estado global del carrito y la sesión de usuario de forma eficiente.
+* **Enrutamiento & Seguridad:** Carga perezosa (*Lazy Loading*) en todas las rutas modulares y protección de la vista privada del carrito mediante `authGuard`.
+* **Buenas Prácticas:**
+  * `authInterceptor`: Inyección del token solo en peticiones a `fakestoreapi.com` y cierre de sesión ante errores `401`.
+  * Feedback visual mediante spinner, *Skeleton Loaders*, alertas y toast de acciones.
+  * Interfaz responsiva, accesible y con estilos centralizados en CSS.
+
+### Calidad y pruebas
+* Tests unitarios para autenticación, guard, interceptor, catálogo, carrito y layout principal.
+* Cobertura de tokens inválidos/expirados, dominios externos, login inválido, persistencia y errores de categorías.
+* Ejecución verificada: `33/33` pruebas correctas.
+
+---
+
+## 🛠️ Tecnologías utilizadas
+
+* **Framework:** Angular 21 (Standalone Components)
+* **Estado & Reactividad:** Angular Signals & RxJS
+* **Estilos:** CSS3 nativo (Diseño personalizado estilo boutique)
+* **API:** Fake Store API (`https://fakestoreapi.com`)
+
+### Rutas principales
+* `/`: catálogo de productos.
+* `/auth/login`: autenticación sin navegación de tienda.
+* `/cart`: carrito protegido por `authGuard`.
+* `/terms`: términos y condiciones.
+* `/privacy`: política de privacidad.
+
+---
+
+## 🔑 Credenciales de Acceso
+
+Para probar la autenticación de la aplicación, utiliza las credenciales proporcionadas por la API:
+
+* **Usuario:** `mor_2314`
+* **Contraseña:** `83r5^_`
+
+---
+
+## 🚀 Cómo correrlo en local
+
+Si quieres clonar el proyecto e instalarlo localmente:
+
+1. **Clonar el repositorio:**
+    ```bash
+    git clone https://github.com/anavirgm/fake-store-trial.git
+    cd fake-store-trial
+    ```
+
+2. **Instalar las dependencias:**
+    ```bash
+    npm install
+    ```
+
+3. **Iniciar el servidor de desarrollo:**
+   ```bash
+   ng serve
+   ```
+
+La aplicación estará disponible en http://localhost:4200.
+
+### Comandos disponibles
+
+```bash
+npm start                 # Servidor de desarrollo
+npm test -- --watch=false # Ejecutar las pruebas una vez
+npm run build             # Generar el bundle de producción
+```
+
+---
+
+## 🧠 Decisiones Técnicas
+
+* Uso de Signals sobre NgRx/RxJS puro: `CartService` y `AuthService` exponen estado reactivo con Signals y valores derivados con `computed`, reduciendo boilerplate innecesario.
+
+* Arquitectura Standalone: Facilita el Lazy Loading nativo sin necesidad de declarar NgModules, optimizando el tiempo de carga inicial (bundle size).
+
+* Diseño en CSS Puro: Se decidió no incluir librerías pesadas como Tailwind o Bootstrap para mantener el proyecto liviano, rápido en su build de producción y demostrar control total sobre el Maquetado CSS.
+
+* Seguridad de peticiones: el interceptor solo añade `Authorization` al dominio de Fake Store API; además, la sesión se invalida cuando el JWT es inválido, está expirado o la API responde `401`.
+
+* La aplicación valida la estructura y expiración del JWT para administrar la sesión del cliente. La firma criptográfica y la autorización real corresponden al servidor, que es quien debe validar el token.
+
+* El botón de checkout muestra una confirmación de pedido simulado; no procesa pagos ni crea órdenes reales porque ese flujo está fuera del alcance de Fake Store API.
+
+* Fake Store API no ofrece un endpoint real de registro, por lo que la aplicación implementa login y no simula un registro inexistente.
+
+---
+
+## 📄 Licencia
+
+Este proyecto ha sido desarrollado únicamente con fines de evaluación para la **prueba técnica**. Todos los derechos reservados.
