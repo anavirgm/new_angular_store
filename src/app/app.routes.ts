@@ -34,6 +34,14 @@ export const routes: Routes = [
       {
         path: 'privacy',
         loadComponent: () => import('./pages/legal/privacy.component').then(m => m.PrivacyComponent)
+      },
+      {
+        path: '404',
+        loadComponent: () => import('./shared/components/not-found/not-found.component').then(m => m.NotFoundComponent)
+      },
+      {
+        path: '**',
+        loadComponent: () => import('./shared/components/not-found/not-found.component').then(m => m.NotFoundComponent)
       }
     ]
   },
@@ -41,9 +49,5 @@ export const routes: Routes = [
     path: 'login',
     redirectTo: 'auth/login',
     pathMatch: 'full'
-  },
-  {
-    path: '**',
-    redirectTo: ''
   }
 ];
