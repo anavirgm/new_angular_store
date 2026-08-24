@@ -439,7 +439,7 @@ body {
 .product-preview-backdrop {
 	position: fixed;
 	inset: 0;
-	z-index: 20;
+	z-index: 1100;
 	display: grid;
 	padding: 1rem;
 	place-items: center;
@@ -1108,6 +1108,10 @@ select:focus-visible {
 	.main-header {
 		align-items: flex-start;
 		flex-direction: column;
+	}
+
+	.main-content {
+		padding-top: 130px;
 	}
 
 	.header-actions {
