@@ -109,6 +109,12 @@ export class CartService {
     }
   }
 
+  clearCart(): void {
+    if (this.items().length === 0) return;
+    this.updateItems(() => []);
+    this.showFeedback('Carrito vaciado');
+  }
+
   private showFeedback(message: string, kind: FeedbackKind = 'normal'): void {
     if (this.feedbackTimer) {
       clearTimeout(this.feedbackTimer);

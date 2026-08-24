@@ -102,6 +102,14 @@ import { CartService } from '../../services/cart.service';
             <button class="button button-primary checkout-button" type="button" (click)="cartService.checkout()">
               Finalizar Pedido
             </button>
+
+            <button
+              type="button"
+              class="btn-clear-cart"
+              (click)="cartService.clearCart()"
+              aria-label="Vaciar carrito completo">
+              🗑 Vaciar carrito
+            </button>
           </aside>
 
         </div>
